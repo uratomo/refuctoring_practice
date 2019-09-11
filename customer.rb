@@ -25,17 +25,27 @@ class Customer
     return result
   end
 
+  def html_statement
+    result = "<h1>Rental Record for <em>#{@name}</em></h1><<p>\n"
+    @rentals.each do |element|
+      frequent_renter_points += element.frequent_renter_points
+      
+      result += "\t#{element.movie.title}\t#{element.charge.to_s}<br>\n"
+      total_amount += element.charge
+    end
+    # フッター行の追加
+    result += "<p>Amount owed is <em>#{total_charge}</em></p>\n"
+    result += "You  earned <em>#{frequent_renter_points}</em> frequent renter points<p>"
+    return result
+  end
+
   def amount_for(rental)
     rental.charge
   end
 
  private
   def total_charge
-    result = 0
-    @rentals.each do |element|
-      result += element.charge
-    end
-    return result
+    @rentals.inject(0){|sum,rental| sum + rental.charge}
   end
 
   
